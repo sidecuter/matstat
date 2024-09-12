@@ -24,8 +24,8 @@ pub fn Ms1() -> impl IntoView {
     );
     view! {
         <div class="text-center">
-            <div class="w-fit mx-auto">
-                <input type="text"
+            <div class="w-fit mx-auto space-x-1 mb-2">
+                <input type="text" size="40" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500"
                     value=value
                     node_ref=input_element
                 />
