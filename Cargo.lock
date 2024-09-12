@@ -1101,6 +1101,7 @@ dependencies = [
  "log",
  "plotters",
  "plotters-canvas",
+ "serde",
  "serde_json",
 ]
 
