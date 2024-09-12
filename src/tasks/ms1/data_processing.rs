@@ -16,24 +16,9 @@ pub fn function_data(data: &[TableData]) -> Vec<FunctionData> {
 
 pub fn f_star(datas: &[FunctionData], n: i32) -> Vec<Vec<(f32, f32)>> {
     datas.iter().map(|fd| {
-        let start;
-        let end;
-        if let Some(st) = fd.borders.start {
-            start = st;
-        } else {
-            start = 0;
-        }
-        if let Some(e) = fd.borders.end {
-            end = e;
-        } else {
-            end = start + 3;
-        }
-        let value = if fd.value == 0 {
-            0.
-        } else {
-            (fd.value as f32) / (n as f32)
-        };
-        (start..=end).map(move |x| (x as f32, value)).collect()
+        let start = fd.borders.start.unwrap_or(0);
+        let end = fd.borders.end.unwrap_or(start+3);
+        (start..=end).map(move |x| (x as f32, (fd.value as f32) / (n as f32))).collect()
     }).collect()
 }
 
@@ -43,17 +28,11 @@ pub fn parse_data(values: &str) -> Result<Table, Box<dyn std::error::Error>> {
     for value in splited_values {
         values.push(value.parse::<i32>()?);
     }
-    let n = values.iter().count() as i32;
+    let n = values.len() as i32;
     let mut map: HashMap<i32, i32> = HashMap::new();
     let mut set: HashSet<i32> = HashSet::new();
     for value in values {
-        if map.contains_key(&value) {
-            if let Some(m) = map.get_mut(&value) {
-                *m += 1;
-            }
-        } else {
-            map.insert(value, 1);
-        }
+        *map.entry(value).or_insert(0) += 1;
         set.insert(value);
     }
     let mut result: Vec<TableData> = map.into_iter().map(|(x, m)| (x, m).into()).collect();

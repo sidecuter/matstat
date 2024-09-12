@@ -25,11 +25,15 @@ pub fn Ms1() -> impl IntoView {
     view! {
         <div class="text-center mt-2">
             <div class="w-fit mx-auto space-x-1 mb-2">
-                <input type="text" size="40" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500"
+                <input
+                    type="text"
+                    size="40"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500"
                     value=value
                     node_ref=input_element
                 />
-                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center"
+                <button
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center"
                     on:click=move |_| {
                         let data_string = input_element.get().expect("Is someone home?").value();
                         let parsed_data = dp::parse_data(&data_string);
@@ -42,18 +46,23 @@ pub fn Ms1() -> impl IntoView {
                         }
                         set_value.set(data_string);
                         set_checked.set(true);
-                        let _ = draw("test_chart", &function_data.get_untracked(), n.get_untracked());
+                        let _ = draw(
+                            "test_chart",
+                            &function_data.get_untracked(),
+                            n.get_untracked(),
+                        );
                     }
-                >"Расчитать функцию"</button>
+                >
+                    "Расчитать функцию"
+                </button>
             </div>
-            <Show
-                when=move || { checked.get() }
-                fallback= || view!{}
-            >
-                <Formula conditions=function_data n=n/>
+            <Show when=move || { checked.get() } fallback=|| view! {}>
+                <Formula conditions=function_data n=n />
                 <canvas class="mx-auto" width="1000px" height="800px" id="test_chart"></canvas>
             </Show>
-            <div>"Copy this repo and change the chart function in the source code and make different charts"</div>
+            <div>
+                "Copy this repo and change the chart function in the source code and make different charts"
+            </div>
         </div>
     }
 }

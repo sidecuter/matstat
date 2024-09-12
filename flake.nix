@@ -30,6 +30,9 @@
           rustToolchain
           nodejs
           tailwindcss
+          leptosfmt
+          pkg-config
+          fontconfig
         ];
       };
     });

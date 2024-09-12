@@ -7,15 +7,13 @@ pub fn table(
 ) -> impl IntoView {
     view! {
         <div>
-            <table>
-                // <For
-                //     each=headers
-                //     key=|header| header
-                //     children=move ||
-                // />
+            <table>// <For
+            // each=headers
+            // key=|header| header
+            // children=move ||
+            // />
             </table>
-            <table>
-            </table>
+            <table></table>
         </div>
     }
 }
