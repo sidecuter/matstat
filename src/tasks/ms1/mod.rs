@@ -23,13 +23,13 @@ pub fn Ms1() -> impl IntoView {
         ]
     );
     view! {
-        <div class="text-center">
+        <div class="text-center mt-2">
             <div class="w-fit mx-auto space-x-1 mb-2">
-                <input type="text" size="40" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500"
+                <input type="text" size="40" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500"
                     value=value
                     node_ref=input_element
                 />
-                <button
+                <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center"
                     on:click=move |_| {
                         let data_string = input_element.get().expect("Is someone home?").value();
                         let parsed_data = dp::parse_data(&data_string);
