@@ -30,6 +30,7 @@
           rustToolchain
           nodejs
           tailwindcss
+          leptosfmt
         ];
       };
     });
