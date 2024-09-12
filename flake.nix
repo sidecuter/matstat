@@ -31,6 +31,8 @@
           nodejs
           tailwindcss
           leptosfmt
+          pkg-config
+          fontconfig
         ];
       };
     });

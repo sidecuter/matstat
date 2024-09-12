@@ -31,13 +31,13 @@ impl Borders {
 
     pub fn set_end(&mut self, end: i32) -> Self {
         self.end = Some(end);
-        self.clone()
+        *self
     }
 
 
     pub fn set_start(&mut self, start: i32) -> Self {
         self.start = Some(start);
-        self.clone()
+        *self
     }
 }
 
