@@ -27,8 +27,7 @@ pub fn Formula(
                 </mo>
                 <mtable>
                     {move || {
-                        conditions
-                            .get()
+                        conditions()
                             .into_iter()
                             .map(|fd| {
                                 view! {
@@ -36,40 +35,38 @@ pub fn Formula(
                                         <mtd>
                                             {move || match fd.value {
                                                 0 => view! { <mn>"0"</mn> }.into_any(),
-                                                _ if fd.value / n.get_untracked() == 1 => {
+                                                _ if fd.value / n() == 1 => {
                                                     view! { <mn>"1"</mn> }.into_any()
                                                 }
                                                 _ => {
                                                     view! {
                                                         <mfrac>
-                                                            <mn>{fd.value}</mn>
-                                                            <mn>{move || n.get()}</mn>
+                                                            <mn>{move || fd.value}</mn>
+                                                            <mn>{n}</mn>
                                                         </mfrac>
                                                     }
                                                         .into_any()
                                                 }
                                             }} <mtext>", если"</mtext> <mspace width="5px" />
                                             {move || {
-                                                fd
-                                                    .borders
+                                                fd.borders
                                                     .start
                                                     .is_some()
                                                     .then(|| {
                                                         view! {
-                                                            <mn>{fd.borders.start.unwrap().to_string()}</mn>
+                                                            <mn>{move || fd.borders.start.unwrap().to_string()}</mn>
                                                             <mo>"<"</mo>
                                                         }
                                                     })
                                             }} <mi>"x"</mi>
                                             {move || {
-                                                fd
-                                                    .borders
+                                                fd.borders
                                                     .end
                                                     .is_some()
                                                     .then(|| {
                                                         view! {
                                                             <mo>"≤"</mo>
-                                                            <mn>{fd.borders.end.unwrap().to_string()}</mn>
+                                                            <mn>{move || fd.borders.end.unwrap().to_string()}</mn>
                                                         }
                                                     })
                                             }}
