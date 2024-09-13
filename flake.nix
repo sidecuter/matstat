@@ -18,10 +18,10 @@
         inherit system;
         overlays = [ (import rust-overlay) ];
       };
-      rustToolchain = pkgs.rust-bin.stable.latest.default.override {
+      rustToolchain = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default.override {
         extensions = [ "rust-src" ];
         targets = [ "wasm32-unknown-unknown" ];
-      };
+      });
     in
     {
       devShells.default = pkgs.mkShell {
@@ -31,8 +31,6 @@
           nodejs
           tailwindcss
           leptosfmt
-          pkg-config
-          fontconfig
         ];
       };
     });

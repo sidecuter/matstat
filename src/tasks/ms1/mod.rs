@@ -35,17 +35,17 @@ pub fn Ms1() -> impl IntoView {
                 <button
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center"
                     on:click=move |_| {
-                        let data_string = input_element.get().expect("Is someone home?").value();
+                        let data_string = input_element().expect("Is someone home?").value();
                         let parsed_data = dp::parse_data(&data_string);
                         let fd;
                         if let Ok(table) = parsed_data {
-                            set_data.set(table.data);
+                            set_data(table.data);
                             fd = dp::function_data(&data.get_untracked());
-                            set_n.set(table.n);
-                            set_function_data.set(fd);
+                            set_n(table.n);
+                            set_function_data(fd);
                         }
-                        set_value.set(data_string);
-                        set_checked.set(true);
+                        set_value(data_string);
+                        set_checked(true);
                         let _ = draw(
                             "test_chart",
                             &function_data.get_untracked(),
@@ -56,9 +56,9 @@ pub fn Ms1() -> impl IntoView {
                     "Расчитать функцию"
                 </button>
             </div>
-            <Show when=move || { checked.get() } fallback=|| view! {}>
+            <Show when=checked fallback=|| view! {}>
                 <Formula conditions=function_data n=n />
-                <canvas class="mx-auto" width="1000px" height="800px" id="test_chart"></canvas>
+                <div class="mx-auto w-fit" id="test_chart"></div>
             </Show>
             <div>
                 "Copy this repo and change the chart function in the source code and make different charts"

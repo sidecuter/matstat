@@ -7,8 +7,8 @@ pub fn table(
 ) -> impl IntoView {
     view! {
         <div>
-            <table>// <For
-            // each=headers
+            // <For
+            <table>// each=headers
             // key=|header| header
             // children=move ||
             // />
