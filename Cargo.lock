@@ -816,11 +816,13 @@ dependencies = [
  "charming",
  "console_error_panic_hook",
  "console_log",
+ "js-sys",
  "leptos",
  "leptos_router",
  "log",
  "regex",
  "serde",
+ "serde-wasm-bindgen",
  "serde_json",
  "web-sys",
 ]
