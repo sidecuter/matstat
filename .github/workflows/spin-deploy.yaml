@@ -35,12 +35,25 @@ jobs:
         with:
           components: clippy, rustfmt
 
+      - name: Cache cargo artifacts
+        uses: actions/cache@v4
+        with:
+            path: |
+                ~/.cargo/bin/
+                ~/.cargo/registry/index/
+                ~/.cargo/registry/cache/
+                ~/.cargo/git/db/
+                target/
+            key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache npm artifacts
+        uses: actions/cache@v4
+        with:
+            path: |
+                ~/.npm
+            key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.lock') }}
+
       - name: Add WASM & WASI targets
         run: rustup target add wasm32-unknown-unknown && rustup target add wasm32-wasi
-
-      - name: lint
-        run: cargo clippy & cargo fmt
-
 
       # If using tailwind...
       - name: Install npm dependencies
@@ -53,7 +66,6 @@ jobs:
 
       - name: Build with Trunk
         run: ./trunk build --release
-
 
       # Install Spin CLI & Deploy
 
