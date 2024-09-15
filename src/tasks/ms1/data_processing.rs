@@ -37,11 +37,6 @@ pub fn f_star(datas: &[FunctionData], n: i64) -> Vec<Vec<(f64, f64)>> {
 pub fn parse_data(values: &str) -> Result<Table, Box<dyn std::error::Error>> {
     let re = Regex::new(r"[; ]+").unwrap();
     let splitted_valued: Vec<&str> = re.split(values).collect();
-    // let splited_values = values.split(";");
-    // let mut values = Vec::new();
-    // for value in splited_values {
-    //     values.push(value.parse::<i32>()?);
-    // }
     let n = splitted_valued.len() as i64;
     let mut map: HashMap<&str, i64> = HashMap::new();
     let mut set: HashSet<&str> = HashSet::new();
