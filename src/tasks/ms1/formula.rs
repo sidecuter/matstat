@@ -5,7 +5,7 @@ use super::structs::FunctionData;
 #[component]
 pub fn Formula(
     conditions: ReadSignal<Vec<FunctionData>>,
-    n: ReadSignal<i32>
+    n: ReadSignal<i64>
 ) -> impl IntoView {
     view! {
         <math>
@@ -50,23 +50,23 @@ pub fn Formula(
                                             }} <mtext>", если"</mtext> <mspace width="5px" />
                                             {move || {
                                                 fd.borders
-                                                    .start
+                                                    .left
                                                     .is_some()
                                                     .then(|| {
                                                         view! {
-                                                            <mn>{move || fd.borders.start.unwrap().to_string()}</mn>
+                                                            <mn>{move || fd.borders.left.unwrap().to_string()}</mn>
                                                             <mo>"<"</mo>
                                                         }
                                                     })
                                             }} <mi>"x"</mi>
                                             {move || {
                                                 fd.borders
-                                                    .end
+                                                    .right
                                                     .is_some()
                                                     .then(|| {
                                                         view! {
                                                             <mo>"≤"</mo>
-                                                            <mn>{move || fd.borders.end.unwrap().to_string()}</mn>
+                                                            <mn>{move || fd.borders.right.unwrap().to_string()}</mn>
                                                         }
                                                     })
                                             }}

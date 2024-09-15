@@ -1,27 +1,25 @@
-use serde::{Serialize, Deserialize};
-
 #[derive(Debug, Default, Clone)]
 pub struct TableData {
-    pub x: i32,
-    pub m: i32
+    pub x: f64,
+    pub m: i64
 }
 
 #[derive(Debug, Default, Clone)]
 pub struct Table {
     pub data: Vec<TableData>,
-    pub n: i32
+    pub n: i64
 }
 
-#[derive(Debug, Default, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Default, Clone, Copy)]
 pub struct Borders {
-    pub start: Option<i32>,
-    pub end: Option<i32>
+    pub left: Option<f64>,
+    pub right: Option<f64>
 }
 
-#[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Default, Clone)]
 pub struct FunctionData {
     pub borders: Borders,
-    pub value: i32
+    pub value: i64
 }
 
 impl Borders {
@@ -29,23 +27,23 @@ impl Borders {
         Self::default()
     }
 
-    pub fn set_end(&mut self, end: i32) -> Self {
-        self.end = Some(end);
+    pub fn set_end(&mut self, right: f64) -> Self {
+        self.right = Some(right);
         *self
     }
 
 
-    pub fn set_start(&mut self, start: i32) -> Self {
-        self.start = Some(start);
+    pub fn set_start(&mut self, left: f64) -> Self {
+        self.left = Some(left);
         *self
     }
 }
 
-impl From<(Option<i32>, Option<i32>)> for Borders {
-    fn from(value: (Option<i32>, Option<i32>)) -> Self {
+impl From<(Option<f64>, Option<f64>)> for Borders {
+    fn from(value: (Option<f64>, Option<f64>)) -> Self {
         Self {
-            start: value.0,
-            end: value.1
+            left: value.0,
+            right: value.1
         }
     }
 }
@@ -60,7 +58,7 @@ impl FunctionData {
         self.clone()
     }
 
-    pub fn set_value(&mut self, value: i32) -> Self {
+    pub fn set_value(&mut self, value: i64) -> Self {
         self.value = value;
         self.clone()
     }
@@ -71,19 +69,19 @@ impl TableData {
         Self::default()
     }
 
-    pub fn set_x(&mut self, x: i32) -> Self {
+    pub fn set_x(&mut self, x: f64) -> Self {
         self.x = x;
         self.clone()
     }
 
-    pub fn set_m(&mut self, m: i32) -> Self {
+    pub fn set_m(&mut self, m: i64) -> Self {
         self.m = m;
         self.clone()
     }
 }
 
-impl From<(i32, i32)> for TableData {
-    fn from(item: (i32, i32)) -> Self {
+impl From<(f64, i64)> for TableData {
+    fn from(item: (f64, i64)) -> Self {
         Self::new().set_x(item.0).set_m(item.1)
     }
 }
@@ -98,14 +96,14 @@ impl Table {
         self.clone()
     }
 
-    pub fn set_n(&mut self, n: i32) -> Self {
+    pub fn set_n(&mut self, n: i64) -> Self {
         self.n = n;
         self.clone()
     }
 }
 
-impl From<(Vec<TableData>, i32)> for Table {
-    fn from(item: (Vec<TableData>, i32)) -> Self {
+impl From<(Vec<TableData>, i64)> for Table {
+    fn from(item: (Vec<TableData>, i64)) -> Self {
         Table::new().set_data(&item.0).set_n(item.1)
     }
 }
