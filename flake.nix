@@ -20,7 +20,10 @@
       };
       rustToolchain = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default.override {
         extensions = [ "rust-src" ];
-        targets = [ "wasm32-unknown-unknown" ];
+        targets = [ 
+          "wasm32-unknown-unknown"
+          "wasm32-wasi"
+        ];
       });
     in
     {
@@ -31,6 +34,7 @@
           nodejs
           tailwindcss
           leptosfmt
+          fermyon-spin
         ];
       };
     });
