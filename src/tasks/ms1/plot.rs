@@ -2,7 +2,6 @@ use charming::{
     component::{Axis, DataZoom, DataZoomType, FilterMode, Title}, datatype::CompositeValue, element::{AxisType, LineStyle}, series::Line, Chart, EchartsError
 };
 use leptos::*;
-use log::info;
 use serde::Serialize;
 use serde_wasm_bindgen::to_value;
 use wasm_bindgen::prelude::*;
@@ -108,7 +107,6 @@ pub fn render(width: u32, height: u32, id: &str, chart: &Chart, theme: Theme) ->
         .replace("\"xAxis\":[{", "\"xAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},")
         .replace("\"yAxis\":[{", "\"yAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},");
     let value = parse(&json_string).unwrap();
-    info!("{}", json_string);
     echarts.set_option(value);
     Ok(echarts)
 }
