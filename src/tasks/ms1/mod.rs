@@ -1,6 +1,6 @@
 use leptos::*;
 use self::formula::Formula;
-use self::plot::draw;
+use self::plot::Chart;
 use self::data_processing as dp;
 use self::structs::{TableData, FunctionData};
 
@@ -46,11 +46,6 @@ pub fn Ms1() -> impl IntoView {
                         }
                         set_value(data_string);
                         set_checked(true);
-                        let _ = draw(
-                            "test_chart",
-                            &function_data.get_untracked(),
-                            n.get_untracked(),
-                        );
                     }
                 >
                     "Расчитать функцию"
@@ -58,7 +53,7 @@ pub fn Ms1() -> impl IntoView {
             </div>
             <Show when=checked fallback=|| view! {}>
                 <Formula conditions=function_data n=n />
-                <div class="mx-auto w-fit" id="test_chart"></div>
+                <Chart data=function_data n=n chart_name="f_x".into() width=600 height=700/>
             </Show>
             <div>
                 "Copy this repo and change the chart function in the source code and make different charts"

@@ -6,40 +6,49 @@ use charming::{
     Chart,
     WasmRenderer,
 };
+use leptos::*;
 use super::data_processing::f_star;
 use super::structs::FunctionData;
 
-pub fn draw(canvas_id: &str, data: &[FunctionData], n: i32) -> Result<(), Box<dyn std::error::Error>> {
-    let renderer = WasmRenderer::new(600, 700);
-    let chart = get_chart(data, n);
-    renderer.render(canvas_id, &chart).unwrap();
-    todo!()
+#[component]
+pub fn Chart<'a>(
+    data: ReadSignal<Vec<FunctionData>>,
+    n: ReadSignal<i64>,
+    chart_name: &'a str,
+    width: u32,
+    height: u32,
+) -> impl IntoView {
+    let (id, _) = create_signal(format!("chart_{}", chart_name));
+    let _ = create_local_resource(|| (), move |_| async move {
+        let renderer = WasmRenderer::new(width, height);
+        let chart = get_chart(&data(), n());
+        renderer.render(&id(), &chart).unwrap();
+    });
+
+    view! {
+        <div class="container mx-auto w-fit" id=id></div>
+    } 
 }
 
-fn get_chart(data: &[FunctionData], n: i32) -> Chart {
+fn get_chart(data: &[FunctionData], n: i64) -> Chart {
     let fd = f_star(data, n);
-    let split_x = fd.last().expect("Whoops").last().expect("Whoops").0;
 
     let mut chart = Chart::new()
-        .title(Title::new().text("Simple Line Chart"))
+        .title(Title::new().text("F*(x)"))
         .x_axis(
             Axis::new()
                 .type_(AxisType::Value)
-                .split_number(split_x)
-                .min(0)
-                .max(split_x)
         )
         .y_axis(
             Axis::new()
                 .type_(AxisType::Value)
                 .split_number(50)
-                .min(0)
                 .max(1.02)
         );
     for data in fd {
         chart = chart.series(
             Line::new().data(
-                data.into_iter().map(|(x, y)| Into::<CompositeValue>::into(vec![x as f64, y as f64])).collect()
+                data.into_iter().map(|(x, y)| Into::<CompositeValue>::into(vec![x, y])).collect()
             ).show_symbol(false)
             .line_style(LineStyle::new().color("#5470c6"))
         );

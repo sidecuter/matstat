@@ -819,6 +819,7 @@ dependencies = [
  "leptos",
  "leptos_router",
  "log",
+ "regex",
  "serde",
  "serde_json",
  "web-sys",
