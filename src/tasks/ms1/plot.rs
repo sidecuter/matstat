@@ -32,12 +32,16 @@ pub fn Chart<'a>(
 
 fn get_chart(data: &[FunctionData], n: i64) -> Chart {
     let fd = f_star(data, n);
+    let min_x = fd.first().expect("Whoops").first().expect("Whoops").0;
+    let max_x = fd.last().expect("Whoops").last().expect("Whoops").0;
 
     let mut chart = Chart::new()
         .title(Title::new().text("F*(x)"))
         .x_axis(
             Axis::new()
                 .type_(AxisType::Value)
+                .min(min_x)
+                .max(max_x)
         )
         .y_axis(
             Axis::new()
