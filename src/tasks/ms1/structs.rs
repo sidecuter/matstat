@@ -10,13 +10,13 @@ pub struct Table {
     pub n: i64
 }
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub struct Borders {
     pub left: Option<f64>,
     pub right: Option<f64>
 }
 
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub struct FunctionData {
     pub borders: Borders,
     pub value: i64

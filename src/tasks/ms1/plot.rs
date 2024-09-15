@@ -23,8 +23,8 @@ pub fn Plot<'a>(
 ) -> impl IntoView {
     let (id, _) = create_signal(format!("chart_{}", chart_name));
     let theme = theme;
-    let _ = create_local_resource(|| (), move|_| async move {
-        let chart = get_chart(&data(), n());
+    let _ = create_resource(data, move|data| async move {
+        let chart = get_chart(&data, n());
         render(width, height, &id(), &chart, theme).unwrap();
     });
 
@@ -97,10 +97,7 @@ pub fn render(width: u32, height: u32, id: &str, chart: &Chart, theme: Theme) ->
     let echarts = init(
         &element,
         theme.to_str(),
-        to_value(&ChartSize {
-            width: width,
-            height: height,
-        })
+        to_value(&ChartSize { width, height })
         .unwrap(),
     );
     let json_string = Into::<String>::into(stringify(&to_value(chart).unwrap()).unwrap())
