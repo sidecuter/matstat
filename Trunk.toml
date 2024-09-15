@@ -1,2 +1,8 @@
+[build]
+minify = "on_release"
+
 [tools]
 tailwindcss = "3.4.10"
+
+[clean]
+cargo = true
