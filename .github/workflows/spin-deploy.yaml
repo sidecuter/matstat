@@ -50,7 +50,7 @@ jobs:
         with:
             path: |
                 ~/.npm
-            key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.lock') }}
+            key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
 
       - name: Add WASM & WASI targets
         run: rustup target add wasm32-unknown-unknown && rustup target add wasm32-wasi
