@@ -1,6 +1,6 @@
 use leptos::*;
 use self::formula::Formula;
-use self::plot::Chart;
+use self::plot::Plot;
 use self::data_processing as dp;
 use self::structs::{TableData, FunctionData};
 
@@ -9,6 +9,7 @@ pub mod formula;
 pub mod data_processing;
 pub mod plot;
 pub mod structs;
+pub mod themes;
 
 #[component]
 pub fn Ms1() -> impl IntoView {
@@ -53,11 +54,8 @@ pub fn Ms1() -> impl IntoView {
             </div>
             <Show when=checked fallback=|| view! {}>
                 <Formula conditions=function_data n=n />
-                <Chart data=function_data n=n chart_name="f_x".into() width=600 height=700/>
+                <Plot data=function_data n=n chart_name="f_x".into() width=800 height=700/>
             </Show>
-            <div>
-                "Copy this repo and change the chart function in the source code and make different charts"
-            </div>
         </div>
     }
 }
