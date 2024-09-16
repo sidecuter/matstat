@@ -1,19 +1,80 @@
 use leptos::*;
+use leptos::math::Math;
+use super::structs::Table;
 
 #[component]
-pub fn table(
-    headers: ReadSignal<Vec<String>>,
-    data: ReadSignal<Vec<Vec<String>>>
+pub fn DataTable(
+    headers: ReadSignal<Vec<(HtmlElement<Math>, i32)>>,
+    data: ReadSignal<Table>,
+    n: ReadSignal<i64>
 ) -> impl IntoView {
     view! {
-        <div>
-            // <For
-            <table>// each=headers
-            // key=|header| header
-            // children=move ||
-            // />
+        <div class="mx-auto w-fit h-fit flex flex-row overflow-scroll mb-3">
+            <table class="border border-collapse">
+                <For
+                    each=headers
+                    key=|(_, id)| *id
+                    children=move |(header, _)| {
+                        view! {
+                            <tr>
+                                <td class="font-bold border">
+                                    {header}
+                                </td>
+                            </tr>
+                        }
+                    }
+                />
             </table>
-            <table></table>
+            <table class="border border-collapse border-slate-950">
+                <tr>
+                    <For
+                        each=data
+                        key=|data| data.x.to_string()
+                        children=move |td| {
+                            view! {
+                                <td class="border">
+                                    {td.x}
+                                </td>
+                            }
+                        }
+                    />
+                </tr>
+                <tr>
+                    <For
+                        each=data
+                        key=|data| data.x.to_string()
+                        children=move |td| {
+                            view! {
+                                <td class="border">
+                                    {td.m}
+                                </td>
+                            }
+                        }
+                    />
+                </tr>
+                <tr>
+                    <For
+                        each=data
+                        key=|data| data.x.to_string()
+                        children=move |td| {
+                            view! {
+                                <td class="border">
+                                    {
+                                        view! {
+                                            <math>
+                                                <mfrac>
+                                                    <mn>{td.m}</mn>
+                                                    <mn>{n}</mn>
+                                                </mfrac>
+                                            </math>
+                                        }
+                                    }
+                                </td>
+                            }
+                        }
+                    />
+                </tr>
+            </table>
         </div>
     }
 }
