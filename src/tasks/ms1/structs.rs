@@ -4,11 +4,7 @@ pub struct TableData {
     pub m: i64
 }
 
-#[derive(Debug, Default, Clone)]
-pub struct Table {
-    pub data: Vec<TableData>,
-    pub n: i64
-}
+pub type Table = Vec<TableData>;
 
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub struct Borders {
@@ -86,24 +82,26 @@ impl From<(f64, i64)> for TableData {
     }
 }
 
-impl Table {
-    pub fn new() -> Self {
-        Table::default()
-    }
+// impl Table {
+//     pub fn new() -> Self {
+//         Table::default()
+//     }
 
-    pub fn set_data(&mut self, td: &[TableData]) -> Self {
-        self.data = td.to_vec();
-        self.clone()
-    }
+//     pub fn set_data(&mut self, td: &[TableData]) -> Self {
+//         self.data = td.to_vec();
+//         self.clone()
+//     }
 
-    pub fn set_n(&mut self, n: i64) -> Self {
-        self.n = n;
-        self.clone()
-    }
-}
+//     pub fn set_n(vec![
+//         FunctionData::new()
+//     ]&mut self, n: i64) -> Self {
+//         self.n = n;
+//         self.clone()
+//     }
+// }
 
-impl From<(Vec<TableData>, i64)> for Table {
-    fn from(item: (Vec<TableData>, i64)) -> Self {
-        Table::new().set_data(&item.0).set_n(item.1)
-    }
-}
+// impl From<(Vec<TableData>, i64)> for Table {
+//     fn from(item: (Vec<TableData>, i64)) -> Self {
+//         Table::new().set_data(&item.0).set_n(item.1)
+//     }
+// }

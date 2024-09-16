@@ -34,7 +34,7 @@ pub fn f_star(datas: &[FunctionData], n: i64) -> Vec<Vec<(f64, f64)>> {
     }).collect()
 }
 
-pub fn parse_data(values: &str) -> Result<Table, Box<dyn std::error::Error>> {
+pub fn parse_data(values: &str) -> Result<(Table, i64), Box<dyn std::error::Error>> {
     let re = Regex::new(r"[; ]+").unwrap();
     let splitted_valued: Vec<&str> = re.split(values).collect();
     let n = splitted_valued.len() as i64;
@@ -50,5 +50,5 @@ pub fn parse_data(values: &str) -> Result<Table, Box<dyn std::error::Error>> {
         result.push((x, m).into());
     }
     result.sort_by(|left, right| left.x.partial_cmp(&right.x).unwrap());
-    Ok((result, n).into())
+    Ok((result, n))
 }
