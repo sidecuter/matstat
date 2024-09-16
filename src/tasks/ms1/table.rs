@@ -17,9 +17,7 @@ pub fn DataTable(
                     children=move |(header, _)| {
                         view! {
                             <tr>
-                                <td class="font-bold border">
-                                    {header}
-                                </td>
+                                <td class="font-bold border">{header}</td>
                             </tr>
                         }
                     }
@@ -31,11 +29,7 @@ pub fn DataTable(
                         each=data
                         key=|data| data.x.to_string()
                         children=move |td| {
-                            view! {
-                                <td class="border">
-                                    {td.x}
-                                </td>
-                            }
+                            view! { <td class="border">{td.x}</td> }
                         }
                     />
                 </tr>
@@ -44,11 +38,7 @@ pub fn DataTable(
                         each=data
                         key=|data| data.x.to_string()
                         children=move |td| {
-                            view! {
-                                <td class="border">
-                                    {td.m}
-                                </td>
-                            }
+                            view! { <td class="border">{td.m}</td> }
                         }
                     />
                 </tr>

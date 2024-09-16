@@ -28,9 +28,7 @@ pub fn Plot<'a>(
         render(width, height, &id(), &chart, theme).unwrap();
     });
 
-    view! {
-        <div class="container mx-auto w-fit" id=id></div>
-    } 
+    view! { <div class="container mx-auto w-fit" id=id></div> } 
 }
 
 fn get_chart(data: &[FunctionData], n: i64) -> Chart {
