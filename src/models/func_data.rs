@@ -1,11 +1,3 @@
-#[derive(Debug, Default, Clone)]
-pub struct TableData {
-    pub x: f64,
-    pub m: i64
-}
-
-pub type Table = Vec<TableData>;
-
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub struct Borders {
     pub left: Option<f64>,
@@ -13,7 +5,7 @@ pub struct Borders {
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
-pub struct FunctionData {
+pub struct FormulaData {
     pub borders: Borders,
     pub value: i64
 }
@@ -44,7 +36,7 @@ impl From<(Option<f64>, Option<f64>)> for Borders {
     }
 }
 
-impl FunctionData {
+impl FormulaData {
     pub fn new() -> Self {
         Self::default()
     }
@@ -57,27 +49,5 @@ impl FunctionData {
     pub fn set_value(&mut self, value: i64) -> Self {
         self.value = value;
         self.clone()
-    }
-}
-
-impl TableData {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    pub fn set_x(&mut self, x: f64) -> Self {
-        self.x = x;
-        self.clone()
-    }
-
-    pub fn set_m(&mut self, m: i64) -> Self {
-        self.m = m;
-        self.clone()
-    }
-}
-
-impl From<(f64, i64)> for TableData {
-    fn from(item: (f64, i64)) -> Self {
-        Self::new().set_x(item.0).set_m(item.1)
     }
 }

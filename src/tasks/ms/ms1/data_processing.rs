@@ -1,22 +1,26 @@
 use regex::Regex;
 use core::f64;
 use std::collections::{HashMap, HashSet};
-use super::structs::{FunctionData, Table, TableData};
+use crate::models::{
+    func_data::FormulaData,
+    table::{Table, TableData},
+    point_2d::*
+};
 
-pub fn function_data(data: &[TableData]) -> Vec<FunctionData> {
+pub fn function_data(data: &[TableData]) -> Vec<FormulaData> {
     let mut sum = 0;
     let mut prev = None;
     let mut result = Vec::new();
     for td in data {
-        result.push(FunctionData::new().set_borders(&(prev, Some(td.x)).into()).set_value(sum));
+        result.push(FormulaData::new().set_borders(&(prev, Some(td.x)).into()).set_value(sum));
         sum += td.m;
         prev = Some(td.x);
     }
-    result.push(FunctionData::new().set_borders(&(prev, None).into()).set_value(sum));
+    result.push(FormulaData::new().set_borders(&(prev, None).into()).set_value(sum));
     result
 }
 
-pub fn f_star(datas: &[FunctionData], n: i64) -> Vec<Vec<(f64, f64)>> {
+pub fn f_star(datas: &[FormulaData], n: i64) -> Vec<Func> {
     datas.iter().map(|fd| {
         let mut left = fd.borders.left.unwrap_or(f64::NAN);
         let mut right = fd.borders.right.unwrap_or(f64::NAN);
@@ -28,9 +32,9 @@ pub fn f_star(datas: &[FunctionData], n: i64) -> Vec<Vec<(f64, f64)>> {
             right = left + 3.0;
         }
         vec![
-            (left, value),
-            (right, value),
-        ]
+            (left, value).into(),
+            (right, value).into(),
+        ].into()
     }).collect()
 }
 

@@ -7,14 +7,14 @@ use serde_wasm_bindgen::to_value;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 use js_sys::JSON::{parse, stringify};
-use super::data_processing::f_star;
-use super::structs::FunctionData;
-use super::themes::Theme;
+use crate::models::point_2d::*;
+use themes::Theme;
+
+pub mod themes;
 
 #[component]
 pub fn Plot<'a>(
-    data: ReadSignal<Vec<FunctionData>>,
-    n: ReadSignal<i64>,
+    data: ReadSignal<FuncSystem>,
     chart_name: &'a str,
     width: u32,
     height: u32,
@@ -24,17 +24,16 @@ pub fn Plot<'a>(
     let (id, _) = create_signal(format!("chart_{}", chart_name));
     let theme = theme;
     let _ = create_resource(data, move|data| async move {
-        let chart = get_chart(&data, n.get_untracked());
+        let chart = get_chart(&data);
         render(width, height, &id.get_untracked(), &chart, theme).unwrap();
     });
 
     view! { <div class="container mx-auto w-fit" id=id></div> } 
 }
 
-fn get_chart(data: &[FunctionData], n: i64) -> Chart {
-    let fd = f_star(data, n);
-    let min_x = fd.first().expect("Whoops").first().expect("Whoops").0;
-    let max_x = fd.last().expect("Whoops").last().expect("Whoops").0;
+fn get_chart(fd: &[Func]) -> Chart {
+    let min_x = fd.first().expect("Whoops").first().expect("Whoops").x;
+    let max_x = fd.last().expect("Whoops").last().expect("Whoops").x;
 
     let mut chart = Chart::new()
         .title(Title::new().text("F*(x)"))
@@ -69,10 +68,12 @@ fn get_chart(data: &[FunctionData], n: i64) -> Chart {
                 .end_value(1.02)
         );
     for data in fd {
+        let points: Vec<CompositeValue> = data
+            .into_iter()
+            .map(|&p| Into::<CompositeValue>::into(vec![p.x, p.y]))
+            .collect(); 
         chart = chart.series(
-            Line::new().data(
-                data.into_iter().map(|(x, y)| Into::<CompositeValue>::into(vec![x, y])).collect()
-            ).show_symbol(false)
+            Line::new().data(points).show_symbol(false)
             .line_style(LineStyle::new().color("#5470c6"))
         );
     }

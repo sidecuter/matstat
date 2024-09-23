@@ -1,6 +1,6 @@
 use leptos::*;
 use leptos::math::Math;
-use super::structs::Table;
+use crate::models::table::Table;
 
 #[component]
 pub fn DataTable(
