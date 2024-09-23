@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "Flake for developing matstat solver";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -22,7 +22,6 @@
         extensions = [ "rust-src" ];
         targets = [ 
           "wasm32-unknown-unknown"
-          "wasm32-wasi"
         ];
       });
     in
@@ -34,7 +33,6 @@
           nodejs
           tailwindcss
           leptosfmt
-          fermyon-spin
         ];
       };
     });

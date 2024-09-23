@@ -1,16 +1,26 @@
 use leptos::*;
-//use leptos_router::*;
+use leptos_router::*;
 
 pub mod tasks;
 // pub mod components;
 
-use crate::tasks::ms1::Ms1;
+use crate::tasks::ms::ms1::Ms1;
 
 #[component]
 pub fn App() -> impl IntoView {
     view! {
         <div class="min-h-screen min-w-full justify-items-center justify-center">
-            <Ms1 />
+            <Router>
+                <Routes>
+                    <Route path="/" view=Ms1 />
+                    <Route
+                        path="/ms2"
+                        view=|| {
+                            view! { <p>"Yo"</p> }
+                        }
+                    />
+                </Routes>
+            </Router>
         </div>
     }
 }

@@ -1,6 +1,6 @@
 [package]
 name = "ms"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 [dependencies]
@@ -16,3 +16,8 @@ web-sys = { version = "0.3.67", features = ["Element", "HtmlElement", "HtmlDivEl
 regex = "1.10.6"
 serde-wasm-bindgen = "0.6.5"
 js-sys = "0.3.70"
+
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-units = 1

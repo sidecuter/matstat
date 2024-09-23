@@ -2,7 +2,7 @@ spin_manifest_version = 2
 
 [application]
 name = "ms"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Alexander Svobodov <31383841+sidecuter@users.noreply.github.com>"]
 description = "Helper for solving matstat tasks"
 
