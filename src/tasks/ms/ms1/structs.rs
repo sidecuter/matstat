@@ -81,27 +81,3 @@ impl From<(f64, i64)> for TableData {
         Self::new().set_x(item.0).set_m(item.1)
     }
 }
-
-// impl Table {
-//     pub fn new() -> Self {
-//         Table::default()
-//     }
-
-//     pub fn set_data(&mut self, td: &[TableData]) -> Self {
-//         self.data = td.to_vec();
-//         self.clone()
-//     }
-
-//     pub fn set_n(vec![
-//         FunctionData::new()
-//     ]&mut self, n: i64) -> Self {
-//         self.n = n;
-//         self.clone()
-//     }
-// }
-
-// impl From<(Vec<TableData>, i64)> for Table {
-//     fn from(item: (Vec<TableData>, i64)) -> Self {
-//         Table::new().set_data(&item.0).set_n(item.1)
-//     }
-// }
