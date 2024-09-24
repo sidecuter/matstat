@@ -19,13 +19,26 @@ pub fn Plot<'a>(
     width: u32,
     height: u32,
     #[prop(default = Theme::Default)]
-    theme: Theme
+    theme: Theme,
+    #[prop(default = create_signal(
+        vec![
+            (
+                "\"xAxis\":[{".to_string(),
+                "\"xAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},".to_string()
+            ),
+            (
+                "\"yAxis\":[{".to_string(),
+                "\"yAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},".to_string()
+            )
+        ]
+    ).0)]
+    replacers: ReadSignal<Vec<(String, String)>>
 ) -> impl IntoView {
     let (id, _) = create_signal(format!("chart_{}", chart_name));
     let theme = theme;
     let _ = create_resource(data, move|data| async move {
         let chart = get_chart(&data);
-        render(width, height, &id.get_untracked(), &chart, theme).unwrap();
+        render(&replacers.get_untracked(), width, height, &id.get_untracked(), &chart, theme).unwrap();
     });
 
     view! { <div class="container mx-auto w-fit" id=id></div> } 
@@ -80,7 +93,14 @@ fn get_chart(fd: &[Func]) -> Chart {
     chart
 }
 
-pub fn render(width: u32, height: u32, id: &str, chart: &Chart, theme: Theme) -> Result<Echarts, EchartsError> {
+pub fn render(
+    replacers: &[(String, String)],
+    width: u32,
+    height: u32,
+    id: &str,
+    chart: &Chart,
+    theme: Theme
+) -> Result<Echarts, EchartsError> {
     let window = web_sys::window().ok_or(EchartsError::WasmError(
         "no `window` object found".to_string(),
     ))?;
@@ -99,17 +119,12 @@ pub fn render(width: u32, height: u32, id: &str, chart: &Chart, theme: Theme) ->
         to_value(&ChartSize { width, height })
         .unwrap(),
     );
-    let json_string = Into::<String>::into(
-            stringify(&to_value(chart).unwrap()).unwrap()
-        )
-        .replace(
-            "\"xAxis\":[{",
-            "\"xAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},"
-        )
-        .replace(
-            "\"yAxis\":[{",
-            "\"yAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},"
-        );
+    let mut json_string = Into::<String>::into(
+        stringify(&to_value(chart).unwrap()).unwrap()
+    );
+    for (old, new) in replacers {
+        json_string = json_string.replace(old, new);
+    }
     let value = parse(&json_string).unwrap();
     echarts.set_option(value);
     Ok(echarts)
