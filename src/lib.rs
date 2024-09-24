@@ -2,6 +2,7 @@ use leptos::*;
 use leptos_router::*;
 
 pub mod tasks;
+pub mod state;
 pub mod models;
 pub mod components;
 

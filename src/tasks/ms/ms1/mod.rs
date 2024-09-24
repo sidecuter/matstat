@@ -64,8 +64,8 @@ pub fn Ms1() -> impl IntoView {
             set_n(n);
             set_function_data(f_star(&fd, n));
             set_formula_data(fd);
+            set_checked(true);
         }
-        set_checked(true);
     };
     view! {
         <div class="text-center mt-2">
