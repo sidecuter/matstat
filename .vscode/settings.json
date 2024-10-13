@@ -18,4 +18,16 @@
         "strings": true
     },
     "css.validate": false,
+    "terminal.integrated.profiles.linux": {
+        "NixDevShell": {
+          "path": "nix",
+          "args": [
+            "develop",
+            "--command",
+            "zsh"
+          ]
+        }
+      },
+    "terminal.integrated.defaultProfile.linux": "NixDevShell",
+    "terminal.integrated.fontFamily": "'FiraCode Nerd Font', monospace",
 }

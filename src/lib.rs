@@ -2,7 +2,8 @@ use leptos::*;
 use leptos_router::*;
 
 pub mod tasks;
-// pub mod components;
+pub mod models;
+pub mod components;
 
 use crate::tasks::ms::ms1::Ms1;
 

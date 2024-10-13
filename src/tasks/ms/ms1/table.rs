@@ -1,6 +1,6 @@
 use leptos::*;
 use leptos::math::Math;
-use super::structs::Table;
+use crate::models::table::Table;
 
 #[component]
 pub fn DataTable(
@@ -25,44 +25,32 @@ pub fn DataTable(
             </table>
             <table class="border border-collapse border-slate-950">
                 <tr>
-                    <For
-                        each=data
-                        key=|data| data.x.to_string()
-                        children=move |td| {
-                            view! { <td class="border">{td.x}</td> }
-                        }
-                    />
+                    {move || data().iter().map(|td| {
+                        view! { <td class="border">{td.x}</td> }
+                    }).collect_view()}
                 </tr>
                 <tr>
-                    <For
-                        each=data
-                        key=|data| data.x.to_string()
-                        children=move |td| {
-                            view! { <td class="border">{td.m}</td> }
-                        }
-                    />
+                    {move || data().iter().map(|td| {
+                        view! { <td class="border">{td.m}</td> }
+                    }).collect_view()}
                 </tr>
                 <tr>
-                    <For
-                        each=data
-                        key=|data| data.x.to_string()
-                        children=move |td| {
-                            view! {
-                                <td class="border">
-                                    {
-                                        view! {
-                                            <math>
-                                                <mfrac>
-                                                    <mn>{td.m}</mn>
-                                                    <mn>{n}</mn>
-                                                </mfrac>
-                                            </math>
-                                        }
+                    {move || data().iter().map(move |td| {
+                        view! {
+                            <td class="border">
+                                {
+                                    view! {
+                                        <math>
+                                            <mfrac>
+                                                <mn>{td.m}</mn>
+                                                <mn>{n}</mn>
+                                            </mfrac>
+                                        </math>
                                     }
-                                </td>
-                            }
+                                }
+                            </td>
                         }
-                    />
+                    }).collect_view()}
                 </tr>
             </table>
         </div>

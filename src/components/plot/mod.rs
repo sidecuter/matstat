@@ -7,34 +7,46 @@ use serde_wasm_bindgen::to_value;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 use js_sys::JSON::{parse, stringify};
-use super::data_processing::f_star;
-use super::structs::FunctionData;
-use super::themes::Theme;
+use crate::models::point_2d::*;
+use themes::Theme;
+
+pub mod themes;
 
 #[component]
 pub fn Plot<'a>(
-    data: ReadSignal<Vec<FunctionData>>,
-    n: ReadSignal<i64>,
+    data: ReadSignal<FuncSystem>,
     chart_name: &'a str,
     width: u32,
     height: u32,
     #[prop(default = Theme::Default)]
-    theme: Theme
+    theme: Theme,
+    #[prop(default = create_signal(
+        vec![
+            (
+                "\"xAxis\":[{".to_string(),
+                "\"xAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},".to_string()
+            ),
+            (
+                "\"yAxis\":[{".to_string(),
+                "\"yAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},".to_string()
+            )
+        ]
+    ).0)]
+    replacers: ReadSignal<Vec<(String, String)>>
 ) -> impl IntoView {
     let (id, _) = create_signal(format!("chart_{}", chart_name));
     let theme = theme;
     let _ = create_resource(data, move|data| async move {
-        let chart = get_chart(&data, n.get_untracked());
-        render(width, height, &id.get_untracked(), &chart, theme).unwrap();
+        let chart = get_chart(&data);
+        render(&replacers.get_untracked(), width, height, &id.get_untracked(), &chart, theme).unwrap();
     });
 
     view! { <div class="container mx-auto w-fit" id=id></div> } 
 }
 
-fn get_chart(data: &[FunctionData], n: i64) -> Chart {
-    let fd = f_star(data, n);
-    let min_x = fd.first().expect("Whoops").first().expect("Whoops").0;
-    let max_x = fd.last().expect("Whoops").last().expect("Whoops").0;
+fn get_chart(fd: &[Func]) -> Chart {
+    let min_x = fd.first().expect("Whoops").first().expect("Whoops").x;
+    let max_x = fd.last().expect("Whoops").last().expect("Whoops").x;
 
     let mut chart = Chart::new()
         .title(Title::new().text("F*(x)"))
@@ -69,17 +81,26 @@ fn get_chart(data: &[FunctionData], n: i64) -> Chart {
                 .end_value(1.02)
         );
     for data in fd {
+        let points: Vec<CompositeValue> = data
+            .into_iter()
+            .map(|&p| Into::<CompositeValue>::into(vec![p.x, p.y]))
+            .collect(); 
         chart = chart.series(
-            Line::new().data(
-                data.into_iter().map(|(x, y)| Into::<CompositeValue>::into(vec![x, y])).collect()
-            ).show_symbol(false)
+            Line::new().data(points).show_symbol(false)
             .line_style(LineStyle::new().color("#5470c6"))
         );
     }
     chart
 }
 
-pub fn render(width: u32, height: u32, id: &str, chart: &Chart, theme: Theme) -> Result<Echarts, EchartsError> {
+pub fn render(
+    replacers: &[(String, String)],
+    width: u32,
+    height: u32,
+    id: &str,
+    chart: &Chart,
+    theme: Theme
+) -> Result<Echarts, EchartsError> {
     let window = web_sys::window().ok_or(EchartsError::WasmError(
         "no `window` object found".to_string(),
     ))?;
@@ -98,17 +119,12 @@ pub fn render(width: u32, height: u32, id: &str, chart: &Chart, theme: Theme) ->
         to_value(&ChartSize { width, height })
         .unwrap(),
     );
-    let json_string = Into::<String>::into(
-            stringify(&to_value(chart).unwrap()).unwrap()
-        )
-        .replace(
-            "\"xAxis\":[{",
-            "\"xAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},"
-        )
-        .replace(
-            "\"yAxis\":[{",
-            "\"yAxis\":[{\"minorTick\":{\"show\":true},\"minorSplitLine\":{\"show\":true},"
-        );
+    let mut json_string = Into::<String>::into(
+        stringify(&to_value(chart).unwrap()).unwrap()
+    );
+    for (old, new) in replacers {
+        json_string = json_string.replace(old, new);
+    }
     let value = parse(&json_string).unwrap();
     echarts.set_option(value);
     Ok(echarts)

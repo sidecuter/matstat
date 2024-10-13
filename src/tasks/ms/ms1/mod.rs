@@ -1,16 +1,14 @@
+use data_processing::f_star;
 use leptos::*;
 use self::formula::Formula;
-use self::plot::Plot;
 use self::table::DataTable;
 use self::data_processing as dp;
-use self::structs::{TableData, FunctionData};
+use crate::components::plot::Plot;
+use crate::models::{table::TableData, func_data::FormulaData, point_2d::Func};
 
 pub mod formula;
 pub mod table;
 pub mod data_processing;
-pub mod plot;
-pub mod structs;
-pub mod themes;
 
 #[component]
 pub fn Ms1() -> impl IntoView {
@@ -49,10 +47,13 @@ pub fn Ms1() -> impl IntoView {
             },2)
         ]
     );
-    let input_element: NodeRef<html::Input> = create_node_ref();
-    let (function_data, set_function_data) = create_signal(
-        Vec::<FunctionData>::new()
+    let (formula_data, set_formula_data) = create_signal(
+        Vec::<FormulaData>::new()
     );
+    let (function_data, set_function_data) = create_signal(
+        Vec::<Func>::new()
+    );
+    let input_element: NodeRef<html::Input> = create_node_ref();
     let on_data_process_click = move |_| {
         let data_string = input_element().expect("Is someone home?").value();
         let parsed_data = dp::parse_data(&data_string);
@@ -61,9 +62,10 @@ pub fn Ms1() -> impl IntoView {
             fd = dp::function_data(&table);
             set_data(table);
             set_n(n);
-            set_function_data(fd);
+            set_function_data(f_star(&fd, n));
+            set_formula_data(fd);
+            set_checked(true);
         }
-        set_checked(true);
     };
     view! {
         <div class="text-center mt-2">
@@ -84,8 +86,8 @@ pub fn Ms1() -> impl IntoView {
             </div>
             <Show when=checked fallback=|| view! {}>
                 <DataTable headers=headers data=data n=n />
-                <Formula conditions=function_data n=n />
-                <Plot data=function_data n=n chart_name="f_x".into() width=800 height=700 />
+                <Formula conditions=formula_data n=n />
+                <Plot data=function_data chart_name="f_x".into() width=800 height=700 />
             </Show>
         </div>
     }

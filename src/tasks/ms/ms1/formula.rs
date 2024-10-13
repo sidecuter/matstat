@@ -1,10 +1,10 @@
 use leptos::*;
-use super::structs::FunctionData;
+use crate::models::func_data::FormulaData;
 
 
 #[component]
 pub fn Formula(
-    conditions: ReadSignal<Vec<FunctionData>>,
+    conditions: ReadSignal<Vec<FormulaData>>,
     n: ReadSignal<i64>
 ) -> impl IntoView {
     view! {
