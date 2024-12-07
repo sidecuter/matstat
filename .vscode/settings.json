@@ -29,5 +29,5 @@
         }
       },
     "terminal.integrated.defaultProfile.linux": "NixDevShell",
-    "terminal.integrated.fontFamily": "'FiraCode Nerd Font', monospace",
+    "terminal.integrated.fontFamily": "'FiraCode Nerd Font', monospace"
 }
