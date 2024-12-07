@@ -43,11 +43,11 @@ impl FormulaData {
 
     pub fn set_borders(&mut self, borders: &Borders) -> Self {
         self.borders = *borders;
-        self.clone()
+        *self
     }
 
     pub fn set_value(&mut self, value: i64) -> Self {
         self.value = value;
-        self.clone()
+        *self
     }
 }

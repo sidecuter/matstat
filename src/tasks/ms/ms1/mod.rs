@@ -87,7 +87,7 @@ pub fn Ms1() -> impl IntoView {
             <Show when=checked fallback=|| view! {}>
                 <DataTable headers=headers data=data n=n />
                 <Formula conditions=formula_data n=n />
-                <Plot data=function_data chart_name="f_x".into() width=800 height=700 />
+                <Plot data=function_data chart_name="f_x" width=800 height=700 />
             </Show>
         </div>
     }

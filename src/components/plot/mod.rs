@@ -13,6 +13,7 @@ use themes::Theme;
 pub mod themes;
 
 #[component]
+#[allow(clippy::needless_lifetimes)]
 pub fn Plot<'a>(
     data: ReadSignal<FuncSystem>,
     chart_name: &'a str,
@@ -35,7 +36,6 @@ pub fn Plot<'a>(
     replacers: ReadSignal<Vec<(String, String)>>
 ) -> impl IntoView {
     let (id, _) = create_signal(format!("chart_{}", chart_name));
-    let theme = theme;
     let _ = create_resource(data, move|data| async move {
         let chart = get_chart(&data);
         render(&replacers.get_untracked(), width, height, &id.get_untracked(), &chart, theme).unwrap();
@@ -82,7 +82,7 @@ fn get_chart(fd: &[Func]) -> Chart {
         );
     for data in fd {
         let points: Vec<CompositeValue> = data
-            .into_iter()
+            .iter()
             .map(|&p| Into::<CompositeValue>::into(vec![p.x, p.y]))
             .collect(); 
         chart = chart.series(

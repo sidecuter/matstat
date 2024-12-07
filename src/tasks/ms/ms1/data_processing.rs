@@ -46,7 +46,7 @@ pub fn f_star(datas: &[FormulaData], n: i64) -> FuncSystem {
         vec![
             (left, value).into(),
             (right, value).into(),
-        ].into()
+        ]
     }).collect()
 }
 
