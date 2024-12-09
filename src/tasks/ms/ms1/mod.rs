@@ -1,7 +1,7 @@
 use leptos::*;
 use self::formula::Formula;
 use self::table::SequenceTable;
-use self::data_processing as dp;
+use self::data_processing::parse_data;
 use crate::components::plot::Plot;
 use crate::models::table::TableData;
 
@@ -17,11 +17,12 @@ pub fn Ms1() -> impl IntoView {
     let input_element: NodeRef<html::Input> = create_node_ref();
     let on_data_process_click = move |_| {
         let data_string = input_element().expect("Is someone home?").value();
-        let parsed_data = dp::parse_data(&data_string);
-        if let Ok((table, n)) = parsed_data {
+        if let Ok((table, n)) = parse_data(&data_string) {
             set_data(table);
             set_n(n);
             set_checked(true);
+        } else {
+            set_checked(false);
         }
     };
     view! {

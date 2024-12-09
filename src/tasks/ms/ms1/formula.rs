@@ -1,7 +1,7 @@
 use leptos::*;
 use crate::models::func_data::FormulaData;
 use crate::models::table::Table;
-use crate::tasks::ms::ms1::dp::function_data;
+use crate::tasks::ms::ms1::data_processing::function_data;
 
 #[component]
 pub fn Formula(
