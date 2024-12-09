@@ -19,7 +19,7 @@
         overlays = [ (import rust-overlay) ];
       };
       rustToolchain = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default.override {
-        extensions = [ "rust-src" "clippy-preview" ];
+        extensions = [ "rust-src" ];
         targets = [ 
           "wasm32-unknown-unknown"
         ];
@@ -33,9 +33,6 @@
           nodejs
           tailwindcss
           leptosfmt
-          (writeShellScriptBin "clippy" ''
-            cargo-clippy
-          '')
         ];
       };
     });
