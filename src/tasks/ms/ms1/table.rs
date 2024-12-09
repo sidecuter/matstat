@@ -1,13 +1,42 @@
 use leptos::*;
-use leptos::math::Math;
 use crate::models::table::Table;
 
 #[component]
-pub fn DataTable(
-    headers: ReadSignal<Vec<(HtmlElement<Math>, i32)>>,
+pub fn SequenceTable(
     data: ReadSignal<Table>,
     n: ReadSignal<i64>
 ) -> impl IntoView {
+    let (headers, _) = create_signal(
+        vec![
+            (view! {
+                <math>
+                    <msub>
+                        <mi>"x"</mi>
+                        <mi>"i"</mi>
+                    </msub>
+                </math>
+            }, 0),
+            (view! {
+                <math>
+                    <msub>
+                        <mi>"m"</mi>
+                        <mi>"i"</mi>
+                    </msub>
+                </math>
+            }, 1),
+            (view! {
+                <math>
+                    <mfrac>
+                        <msub>
+                            <mi>"m"</mi>
+                            <mi>"i"</mi>
+                        </msub>
+                        <mi>"n"</mi>
+                    </mfrac>
+                </math>
+            },2)
+        ]
+    );
     view! {
         <div class="mx-auto w-fit h-fit flex flex-row overflow-scroll mb-3">
             <table class="border border-collapse">
