@@ -6,16 +6,19 @@ use serde::Serialize;
 use serde_wasm_bindgen::to_value;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
-use js_sys::JSON::{parse, stringify};
+use js_sys::JSON::parse;
 use crate::models::point_2d::*;
 use themes::Theme;
+use crate::models::table::Table;
+use crate::tasks::ms::ms1::data_processing::{f_star, function_data};
 
 pub mod themes;
 
 #[component]
 #[allow(clippy::needless_lifetimes)]
 pub fn Plot<'a>(
-    data: ReadSignal<FuncSystem>,
+    data: ReadSignal<Table>,
+    n: ReadSignal<i64>,
     chart_name: &'a str,
     width: u32,
     height: u32,
@@ -37,7 +40,8 @@ pub fn Plot<'a>(
 ) -> impl IntoView {
     let (id, _) = create_signal(format!("chart_{}", chart_name));
     let _ = create_resource(data, move|data| async move {
-        let chart = get_chart(&data);
+        let func_data = f_star(&function_data(&data), n());
+        let chart = get_chart(&func_data);
         render(&replacers.get_untracked(), width, height, &id.get_untracked(), &chart, theme).unwrap();
     });
 
@@ -119,9 +123,7 @@ pub fn render(
         to_value(&ChartSize { width, height })
         .unwrap(),
     );
-    let mut json_string = Into::<String>::into(
-        stringify(&to_value(chart).unwrap()).unwrap()
-    );
+    let mut json_string = serde_json::to_string(&chart).unwrap();
     for (old, new) in replacers {
         json_string = json_string.replace(old, new);
     }
