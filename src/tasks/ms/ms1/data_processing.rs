@@ -1,20 +1,29 @@
-use regex::Regex;
-use core::f64;
-use std::collections::{HashMap, HashSet};
 use crate::models::{
-    func_data::FormulaData, point_2d::*, table::{Table, TableData}
+    func_data::FormulaData,
+    point_2d::*,
+    table::{Table, TableData},
 };
+use regex::Regex;
+use std::collections::{HashMap, HashSet};
 
 pub fn function_data(data: &[TableData]) -> Vec<FormulaData> {
     let mut sum = 0;
     let mut prev = None;
     let mut result = Vec::new();
     for td in data {
-        result.push(FormulaData::new().set_borders(&(prev, Some(td.x)).into()).set_value(sum));
+        result.push(
+            FormulaData::new()
+                .set_borders(&(prev, Some(td.x)).into())
+                .set_value(sum),
+        );
         sum += td.m;
         prev = Some(td.x);
     }
-    result.push(FormulaData::new().set_borders(&(prev, None).into()).set_value(sum));
+    result.push(
+        FormulaData::new()
+            .set_borders(&(prev, None).into())
+            .set_value(sum),
+    );
     result
 }
 
@@ -33,21 +42,21 @@ pub fn f_star(datas: &[FormulaData], n: i64) -> FuncSystem {
         .left
         .expect("Expected existing value");
     let h = ((last - first) / k * 100.0).round() / 100.0;
-    datas.iter().map(|fd| {
-        let mut left = fd.borders.left.unwrap_or(f64::NAN);
-        let mut right = fd.borders.right.unwrap_or(f64::NAN);
-        let value = fd.value as f64 / n as f64;
-        if left.is_nan() {
-            left = right - h;
-        }
-        if right.is_nan() {
-            right = left + h;
-        }
-        vec![
-            (left, value).into(),
-            (right, value).into(),
-        ]
-    }).collect()
+    datas
+        .iter()
+        .map(|fd| {
+            let mut left = fd.borders.left.unwrap_or(f64::NAN);
+            let mut right = fd.borders.right.unwrap_or(f64::NAN);
+            let value = fd.value as f64 / n as f64;
+            if left.is_nan() {
+                left = right - h;
+            }
+            if right.is_nan() {
+                right = left + h;
+            }
+            vec![(left, value).into(), (right, value).into()]
+        })
+        .collect()
 }
 
 pub fn parse_data(values: &str) -> Result<(Table, i64), Box<dyn std::error::Error>> {

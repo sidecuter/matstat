@@ -1,30 +1,33 @@
-use leptos::*;
 use crate::models::table::Table;
+use leptos::*;
 
 #[component]
-pub fn SequenceTable(
-    data: ReadSignal<Table>,
-    n: ReadSignal<i64>
-) -> impl IntoView {
-    let (headers, _) = create_signal(
-        vec![
-            (view! {
+pub fn SequenceTable(data: ReadSignal<Table>, n: ReadSignal<i64>) -> impl IntoView {
+    let (headers, _) = create_signal(vec![
+        (
+            view! {
                 <math>
                     <msub>
                         <mi>"x"</mi>
                         <mi>"i"</mi>
                     </msub>
                 </math>
-            }, 0),
-            (view! {
+            },
+            0,
+        ),
+        (
+            view! {
                 <math>
                     <msub>
                         <mi>"m"</mi>
                         <mi>"i"</mi>
                     </msub>
                 </math>
-            }, 1),
-            (view! {
+            },
+            1,
+        ),
+        (
+            view! {
                 <math>
                     <mfrac>
                         <msub>
@@ -34,9 +37,10 @@ pub fn SequenceTable(
                         <mi>"n"</mi>
                     </mfrac>
                 </math>
-            },2)
-        ]
-    );
+            },
+            2,
+        ),
+    ]);
     view! {
         <div class="mx-auto w-fit h-fit flex flex-row overflow-scroll mb-3">
             <table class="border border-collapse">
