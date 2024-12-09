@@ -19,7 +19,7 @@
         overlays = [ (import rust-overlay) ];
       };
       rustToolchain = pkgs.rust-bin.selectLatestNightlyWith (toolchain: toolchain.default.override {
-        extensions = [ "rust-src" ];
+        extensions = [ "rust-src" "rustfmt-preview" ];
         targets = [ 
           "wasm32-unknown-unknown"
         ];

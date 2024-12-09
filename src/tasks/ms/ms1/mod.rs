@@ -1,13 +1,13 @@
-use leptos::*;
+use self::data_processing::parse_data;
 use self::formula::Formula;
 use self::table::SequenceTable;
-use self::data_processing::parse_data;
 use crate::components::plot::Plot;
 use crate::models::table::TableData;
+use leptos::*;
 
+pub mod data_processing;
 pub mod formula;
 pub mod table;
-pub mod data_processing;
 
 #[component]
 pub fn Ms1() -> impl IntoView {

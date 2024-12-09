@@ -1,7 +1,7 @@
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct TableData {
     pub x: f64,
-    pub m: i64
+    pub m: i64,
 }
 
 pub type Table = Vec<TableData>;

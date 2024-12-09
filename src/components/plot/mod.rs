@@ -1,16 +1,20 @@
+use crate::models::point_2d::*;
+use crate::models::table::Table;
+use crate::tasks::ms::ms1::data_processing::{f_star, function_data};
 use charming::{
-    component::{Axis, DataZoom, DataZoomType, FilterMode, Title}, datatype::CompositeValue, element::{AxisType, LineStyle}, series::Line, Chart, EchartsError
+    component::{Axis, DataZoom, DataZoomType, FilterMode, Title},
+    datatype::CompositeValue,
+    element::{AxisType, LineStyle},
+    series::Line,
+    Chart, EchartsError,
 };
+use js_sys::JSON::parse;
 use leptos::*;
 use serde::Serialize;
 use serde_wasm_bindgen::to_value;
+use themes::Theme;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
-use js_sys::JSON::parse;
-use crate::models::point_2d::*;
-use themes::Theme;
-use crate::models::table::Table;
-use crate::tasks::ms::ms1::data_processing::{f_star, function_data};
 
 pub mod themes;
 
@@ -22,8 +26,7 @@ pub fn Plot<'a>(
     chart_name: &'a str,
     width: u32,
     height: u32,
-    #[prop(default = Theme::Default)]
-    theme: Theme,
+    #[prop(default = Theme::Default)] theme: Theme,
     #[prop(default = create_signal(
         vec![
             (
@@ -36,16 +39,24 @@ pub fn Plot<'a>(
             )
         ]
     ).0)]
-    replacers: ReadSignal<Vec<(String, String)>>
+    replacers: ReadSignal<Vec<(String, String)>>,
 ) -> impl IntoView {
     let (id, _) = create_signal(format!("chart_{}", chart_name));
-    let _ = create_resource(data, move|data| async move {
+    let _ = create_resource(data, move |data| async move {
         let func_data = f_star(&function_data(&data), n());
         let chart = get_chart(&func_data);
-        render(&replacers.get_untracked(), width, height, &id.get_untracked(), &chart, theme).unwrap();
+        render(
+            &replacers.get_untracked(),
+            width,
+            height,
+            &id.get_untracked(),
+            &chart,
+            theme,
+        )
+        .unwrap();
     });
 
-    view! { <div class="container mx-auto w-fit" id=id></div> } 
+    view! { <div class="container mx-auto w-fit" id=id></div> }
 }
 
 fn get_chart(fd: &[Func]) -> Chart {
@@ -59,13 +70,9 @@ fn get_chart(fd: &[Func]) -> Chart {
                 .type_(AxisType::Value)
                 .min(min_x)
                 .max(max_x)
-                .split_number(20)
+                .split_number(20),
         )
-        .y_axis(
-            Axis::new()
-                .type_(AxisType::Value)
-                .max(1.02)
-        )
+        .y_axis(Axis::new().type_(AxisType::Value).max(1.02))
         .data_zoom(
             DataZoom::new()
                 .show(true)
@@ -73,7 +80,7 @@ fn get_chart(fd: &[Func]) -> Chart {
                 .filter_mode(FilterMode::None)
                 .x_axis_index(0)
                 .start_value(min_x)
-                .end_value(max_x)
+                .end_value(max_x),
         )
         .data_zoom(
             DataZoom::new()
@@ -82,16 +89,18 @@ fn get_chart(fd: &[Func]) -> Chart {
                 .filter_mode(FilterMode::None)
                 .y_axis_index(0)
                 .start_value(0)
-                .end_value(1.02)
+                .end_value(1.02),
         );
     for data in fd {
         let points: Vec<CompositeValue> = data
             .iter()
             .map(|&p| Into::<CompositeValue>::into(vec![p.x, p.y]))
-            .collect(); 
+            .collect();
         chart = chart.series(
-            Line::new().data(points).show_symbol(false)
-            .line_style(LineStyle::new().color("#5470c6"))
+            Line::new()
+                .data(points)
+                .show_symbol(false)
+                .line_style(LineStyle::new().color("#5470c6")),
         );
     }
     chart
@@ -103,7 +112,7 @@ pub fn render(
     height: u32,
     id: &str,
     chart: &Chart,
-    theme: Theme
+    theme: Theme,
 ) -> Result<Echarts, EchartsError> {
     let window = web_sys::window().ok_or(EchartsError::WasmError(
         "no `window` object found".to_string(),
@@ -120,8 +129,7 @@ pub fn render(
     let echarts = init(
         &element,
         theme.to_str(),
-        to_value(&ChartSize { width, height })
-        .unwrap(),
+        to_value(&ChartSize { width, height }).unwrap(),
     );
     let mut json_string = serde_json::to_string(&chart).unwrap();
     for (old, new) in replacers {
