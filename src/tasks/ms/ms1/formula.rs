@@ -1,13 +1,10 @@
-use leptos::*;
 use crate::models::func_data::FormulaData;
 use crate::models::table::Table;
 use crate::tasks::ms::ms1::data_processing::function_data;
+use leptos::*;
 
 #[component]
-pub fn Formula(
-    data: ReadSignal<Table>,
-    n: ReadSignal<i64>
-) -> impl IntoView {
+pub fn Formula(data: ReadSignal<Table>, n: ReadSignal<i64>) -> impl IntoView {
     view! {
         <math>
             <msup>
@@ -40,10 +37,7 @@ pub fn Formula(
     }
 }
 
-fn formula_row(
-    fd: FormulaData,
-    n: ReadSignal<i64>
-) -> impl IntoView {
+fn formula_row(fd: FormulaData, n: ReadSignal<i64>) -> impl IntoView {
     view! {
         <mtr>
             <mtd>

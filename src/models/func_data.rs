@@ -1,13 +1,13 @@
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub struct Borders {
     pub left: Option<f64>,
-    pub right: Option<f64>
+    pub right: Option<f64>,
 }
 
 #[derive(Debug, Default, Clone, Copy, PartialEq)]
 pub struct FormulaData {
     pub borders: Borders,
-    pub value: i64
+    pub value: i64,
 }
 
 impl Borders {
@@ -20,7 +20,6 @@ impl Borders {
         *self
     }
 
-
     pub fn set_start(&mut self, left: f64) -> Self {
         self.left = Some(left);
         *self
@@ -31,7 +30,7 @@ impl From<(Option<f64>, Option<f64>)> for Borders {
     fn from(value: (Option<f64>, Option<f64>)) -> Self {
         Self {
             left: value.0,
-            right: value.1
+            right: value.1,
         }
     }
 }
