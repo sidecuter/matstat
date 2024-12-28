@@ -43,7 +43,7 @@ pub fn Plot<'a>(
 ) -> impl IntoView {
     let (id, _) = create_signal(format!("chart_{}", chart_name));
     let _ = create_resource(data, move |data| async move {
-        let func_data = f_star(&function_data(&data), n());
+        let func_data = f_star(&function_data(&data), n.get_untracked());
         let chart = get_chart(&func_data);
         render(
             &replacers.get_untracked(),

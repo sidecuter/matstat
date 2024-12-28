@@ -48,7 +48,7 @@ pub fn Ms1() -> impl IntoView {
                 <SequenceTable data=data n=n />
                 <Formula data=data n=n />
                 <Plot data=data n=n chart_name="f_x" width=800 height=700 />
-                <Params td=data />
+                <Params data=data />
             </Show>
         </div>
     }
