@@ -1,6 +1,7 @@
 use self::data_processing::parse_data;
 use self::formula::Formula;
 use self::table::SequenceTable;
+use self::params::Params;
 use crate::components::plot::Plot;
 use crate::models::table::TableData;
 use leptos::*;
@@ -8,6 +9,7 @@ use leptos::*;
 pub mod data_processing;
 pub mod formula;
 pub mod table;
+pub mod params;
 
 #[component]
 pub fn Ms1() -> impl IntoView {
@@ -46,6 +48,7 @@ pub fn Ms1() -> impl IntoView {
                 <SequenceTable data=data n=n />
                 <Formula data=data n=n />
                 <Plot data=data n=n chart_name="f_x" width=800 height=700 />
+                <Params td=data />
             </Show>
         </div>
     }

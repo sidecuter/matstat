@@ -78,3 +78,25 @@ pub fn parse_data(values: &str) -> Result<(Table, i64), Box<dyn std::error::Erro
     result.sort_by(|left, right| left.x.partial_cmp(&right.x).unwrap());
     Ok((result, n))
 }
+
+pub fn count_x_avg(t: &Table, n: i64) -> f64 {
+    let sum: f64 = t.iter().map(|td| td.m as f64 * td.x).sum();
+    sum / n as f64
+}
+
+pub fn count_d_v(t: &Table, x_avg: f64, n: i64) -> f64 {
+    let sum: f64 = t.iter().map(|td| td.m as f64 * td.x * td.x).sum();
+    sum / n as f64 - x_avg * x_avg
+} 
+
+pub fn count_s_2(d_v: f64, n: i64) -> f64 {
+    d_v * n as f64 / (n - 1) as f64
+}
+
+pub fn count_s(s_2: f64) -> f64 {
+    s_2.sqrt()
+}
+
+pub fn count_sigma_v(d_v: f64) -> f64 {
+    d_v.sqrt()
+}
